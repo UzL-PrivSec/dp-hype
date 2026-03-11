@@ -186,7 +186,7 @@ Fully contains the experiment described in Main Result 4.  The CSV files are sto
 - Time: ~12.0 hours
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs.sh artifacts <device> no   
+bash experiments/privutility_tradeoffs_iid.sh artifacts <device> no   
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for all client counts (50, 100, 250) on all data sets in the iid setting.
@@ -198,7 +198,7 @@ The same number of figures will be created. The names are figure4_privutil_trade
 - Time: ~12 hours
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs.sh artifacts <device> 50 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 50 no   
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for 50 clients on all data sets and in iid as well as three non-iid scenarios.
@@ -266,7 +266,7 @@ Fully contains the experiment described in Main Result 8. The CSV file is stored
 - Time: multiple days
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs.sh artifacts <device> 100 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 100 no   
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for 100 clients on all data sets and in iid as well as three non-iid scenarios.
@@ -278,7 +278,7 @@ The same number of figures will be created. The names are figure4_privutil_trade
 - Time: multiple days
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs.sh artifacts <device> 250 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 250 no   
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for 250 clients on all data sets and in iid as well as three non-iid scenarios.
