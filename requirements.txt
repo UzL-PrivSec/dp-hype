@@ -1,0 +1,4 @@
+scikit-learn
+flwr[simulation]==1.26.1
+flwr-datasets[vision]
+autodp

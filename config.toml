@@ -1,0 +1,20 @@
+[superlink]
+default = "local"
+
+[superlink.supergrid]
+address = "supergrid.flower.ai"
+
+[superlink.privutil_tradeoff_n50]
+options.num-supernodes = 50
+options.backend.client-resources.num-cpus = 1
+options.backend.client-resources.num-gpus = 0.12
+
+[superlink.privutil_tradeoff_n100]
+options.num-supernodes = 100
+options.backend.client-resources.num-cpus = 1
+options.backend.client-resources.num-gpus = 0.12
+
+[superlink.privutil_tradeoff_n250]
+options.num-supernodes = 250
+options.backend.client-resources.num-cpus = 1
+options.backend.client-resources.num-gpus = 0.12

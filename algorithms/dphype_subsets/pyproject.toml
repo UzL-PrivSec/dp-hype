@@ -1,0 +1,59 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fl-dp-sa"
+version = "1.0.0"
+description = "Central Differential Privacy and Secure Aggregation in Flower"
+license = "Apache-2.0"
+dependencies = [
+    "flwr[simulation]>=1.18.0",
+    "flwr-datasets[vision]>=0.5.0",
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "flwrlabs"
+
+[tool.flwr.app.components]
+serverapp = "dphype.server_app:app"
+clientapp = "dphype.client_app:app"
+
+[tool.flwr.app.config]
+num-sampled-clients = -1 # 50,100,250
+
+experiment = "localmachine"
+
+dataset = ""
+# dataset = "ylecun/mnist"
+# dataset = "uoft-cs/cifar10"
+# dataset = "scikit-learn/adult-census-income"
+
+non_iid = "" # "yes" for non-iid (Dirichlet) sampling of data, or anything else for iid sampling of data
+
+alpha = -1 # alpha for Dirichlet distribution (used only when data is non-iid)
+
+data_seed = 1001
+
+num_runs = -1 # 20
+
+mode = "" # "dry", "artifacts", "paper"
+
+# iid
+# dataset != cifar10 -> 5 local, 5 global
+# else -> 10 local, 10 global
+# non-iid
+# same as iid but all global 5      
+eval_rounds = -1      # nr of fed train rounds
+local_epochs = -1    # nr of local epochs
+
+k = 5
+baseline_opt = "" # yes, no
+eps_scenario = "All"
+
+device = "" # cuda:x or cpu

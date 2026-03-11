@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fl-dp-sa"
+version = "1.0.0"
+description = "Feathers Hyperparameter Optimization"
+license = "Apache-2.0"
+dependencies = [
+    "flwr[simulation]>=1.18.0",
+    "flwr-datasets[vision]>=0.5.0",
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "flwrlabs"
+
+[tool.flwr.app.components]
+serverapp = "fl_dp_sa.server_app:app"
+clientapp = "fl_dp_sa.client_app:app"
+
+[tool.flwr.app.config]
+num-sampled-clients = 250
+
+
+experiment = 'localmachine'
+
+dataset = ""
+# dataset = "ylecun/mnist"
+# dataset = "uoft-cs/cifar10"
+
+epsilon = -1 # ["0.1", "0.25", "0.5", "1.0", "3.0", "inf"]
+
+mode = "" # "dry", "artifacts", "paper"
+
+device = "" # cuda:x or cpu
+
+gamma = 4.0
+
+local_epochs = -1 # 5
+rounds = -1 # 120
+max_exploration_steps = -1 # 100
+num_runs = -1 # 10
