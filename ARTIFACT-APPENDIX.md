@@ -153,9 +153,9 @@ Every experiment creates CSV files, and PDF figures in `figures/<mode>/`. These 
 Every experiment supports multiple modes (`<mode>`):
 - `dry`: Used inside the script "test_setup.sh" to test the entire pipeline of experiments and plotting. This mode does **not** produce any meaningful results.
 - `paper`: Performs the exact same experiments as in the paper. The runtime estimations below were derived from the artifacts mode. Reproducing the exact same experiments requires roughly two weeks on the tested setup without parallelization.  
-- `artifacts`: The intended mode to evaluate these artifacts, with two major differences from `paper`. First, in experiment 3 and 4, DP-Hype lets each client perform local hyperparameter evaluations only once, but performs multiple runs to capture the influence of differential privacy. Second, the number of runs is reduced by half for all experiments. This mode reproduces very similar figures compared to those in the paper while significantly reducing the runtime for most experiments.   
+- `artifacts`: The intended mode to evaluate these artifacts, with two major differences from `paper`. First, in experiment 3 and 4, DP-Hype lets each client perform local hyperparameter evaluations only once, but performs multiple runs to capture the influence of differential privacy. Second, the number of runs is reduced by half for all experiments. This mode reproduces very similar figures compared to those in the paper while significantly reducing the runtime for most experiments. We strongly encourage running experiments in parallel if possible.  
 
-To reduce runtime further, we include the result files for the OPT baseline. OPT is an often evaluated, standard federated learning algorithm. Still, these artifacts provide code to reproduce the baseline results by using a "yes" instead of "no" in experiments 4, 10, and 11. Plotting scripts in "plotting/" will use the baseline results from "opt_data/", indicated by a warning, if the corresponding data was not reproduced yet. Still, we strongly encourage running experiments in parallel if possible.
+To reduce runtime further, we include the result files for the OPT baseline. OPT is an often evaluated, standard federated learning algorithm. Plotting scripts in "plotting/" will use the baseline results from "opt_data/", indicated by a warning, if the corresponding data was not reproduced yet. Still, these artifacts provide code to reproduce the baseline results by appending a "yes" to the commands of experiments 3, 4, 10, and 11.
 
 **TODO: Replace `<device>`, e.g. `cuda:0`,  with the corresponding GPU device name or `cpu` for testing.**
 
@@ -183,10 +183,10 @@ Fully contains the experiment described in Main Result 4.  The CSV files are sto
 
 #### Experiment 3: Privacy-Utility Trade-Off IID (Figure 4)
 - Corresponding Result: Main Result 2
-- Time: ~12.0 hours
+- Time: ~12 hours
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs_iid.sh artifacts <device> no   
+bash experiments/privutility_tradeoffs_iid.sh artifacts <device>   
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for all client counts (50, 100, 250) on all data sets in the iid setting.
@@ -198,12 +198,12 @@ The same number of figures will be created. The names are figure4_privutil_trade
 - Time: ~12 hours
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 50 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 50   
 ```
 
-Starts experiments for the privacy-utility trade-off of DP-Hype for 50 clients on all data sets and in iid as well as three non-iid scenarios.
-12 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
-The same number of figures will be created. The names are figure4_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N50_iid.pdf and figure<5|12|13>_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N50_dirichlet-<30.0|5.0|0.5>.pdf.
+Starts experiments for the privacy-utility trade-off of DP-Hype for 50 clients on all data sets in three non-iid scenarios.
+9 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
+The same number of figures will be created. The names are figure13_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N50_dirichlet-<30.0|5.0|0.5>.pdf.
 
 #### Experiment 5: Ablation Subsets 
 - Corresponding Result: Main Result 7
@@ -266,24 +266,24 @@ Fully contains the experiment described in Main Result 8. The CSV file is stored
 - Time: multiple days
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 100 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 100   
 ```
 
-Starts experiments for the privacy-utility trade-off of DP-Hype for 100 clients on all data sets and in iid as well as three non-iid scenarios.
-12 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
-The same number of figures will be created. The names are figure4_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N100_iid.pdf and figure<5|12|13>_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N100_dirichlet-<30.0|5.0|0.5>.pdf.
+Starts experiments for the privacy-utility trade-off of DP-Hype for 100 clients on all data sets in three non-iid scenarios.
+9 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
+The same number of figures will be created. The names are figure5_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N100_dirichlet-<30.0|5.0|0.5>.pdf.
 
 #### Experiment 11: Privacy-Utility Trade-Off NON-IID N=250 (Figure 12)
 - Corresponding Result: Main Result 2
 - Time: multiple days
 - Command: 
 ```bash
-bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 250 no   
+bash experiments/privutility_tradeoffs_noniid.sh artifacts <device> 250
 ```
 
 Starts experiments for the privacy-utility trade-off of DP-Hype for 250 clients on all data sets and in iid as well as three non-iid scenarios.
-12 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
-The same number of figures will be created. The names are figure4_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N250_iid.pdf and figure<5|12|13>_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N250_dirichlet-<30.0|5.0|0.5>.pdf.
+9 CSV files with the results will be created and stored in "algorithms/dphype_topk/dphype/results/artifacts/".
+The same number of figures will be created. The names are figure12_privutil_tradeoff_<Adult|MNIST|Cifar-10>_N250_dirichlet-<30.0|5.0|0.5>.pdf.
 
 ## Limitations
 
