@@ -249,7 +249,7 @@ for (i, n) in enumerate([50, 100, 250])
     )
 end
 
-savefig("$save_dir/figure8a_acc_distribution_noniid_a30allN.pdf")
+savefig("$save_dir/figure8a_acc_distribution_noniid_beta30allN.pdf")
 
 # legend
 
