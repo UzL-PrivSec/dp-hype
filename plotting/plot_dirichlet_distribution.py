@@ -78,6 +78,6 @@ for dataset in [
         )
 
         fig.savefig(
-            f"/workspace/dp-hype/figures/{args.mode}/{fig_prefix}_dirichlet_distribution_{dataset_name_mapping[dataset]}_dirichlet-{alpha}.pdf",
+            f"/workspace/dp-hype/figures/{args.mode}/{fig_prefix}_dirichlet_distribution_{dataset_name_mapping[dataset]}_beta-{alpha}.pdf",
             bbox_inches="tight",
         )
