@@ -9,7 +9,7 @@ WORKDIR /workspace
 
 # System packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    nano git wget tar screen htop ca-certificates texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra \
+    nano git wget tar screen tmux htop ca-certificates texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra \
     && rm -rf /var/lib/apt/lists/*
 
 # Make screen use bash instead of sh
