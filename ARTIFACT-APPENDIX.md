@@ -28,7 +28,8 @@ No security / privacy / ethical issues or concerns.
 A multi-core CPU setup with around 10GB RAM. A GPU is also required as it greatly speeds up the training process. We simulate each client in our federated learning setup as a separate process using the Flower framework. Each client requires a single core, around 1GB of RAM and 200MB of vRAM for the largest data set Cifar-10. The resource allocation per client can be configured in the file "config.toml". Note that fractional CPUs and GPUs are possible but overcommitment should be avoided as clients will be too slow or fail in the worst case.
 
 2. Hardware used for Paper Experiments:
-We performed our experiments on eight cores of an AMD EPYC 7513 CPU and on an A100-20C GPU in MIG setup with 20GB of VRAM. In the "config.toml" we set "num-cpus" = 1 and "num-gpus"=0.12 (~= 1 / #available_cores) to run a total of eight clients in parallel.
+We performed our experiments on eight CPU cores of an AMD EPYC 7513 and on an A100-20C GPU in MIG setup with 20GB of VRAM. In config.toml, num-cpus and num-gpus denote the per-client resource reservation used by Flower, not the total machine resources. In our setup, each client used one CPU core, so we set num-cpus = 1. We set num-gpus = 0.12 to allow about eight clients to run concurrently on our GPU setup.
+To adapt this to other hardware, first determine the number of CPU cores you want to make available to the experiment (for example using nproc). Then choose num-cpus as the number of CPU cores required by one client. Similarly, choose num-gpus as the fraction of one GPU (or one MIG slice) required by one client.
 
 **TODO: Please adjust the "config.toml" file according to your hardware setup (number of Cores and GPUs) in order to run the maximum number of clients in parallel.**
 
@@ -43,6 +44,8 @@ Only the repository has to be cloned. All dependencies, requirements, data sets 
 3. Docker Setup:
    - Docker Version: Docker 24.0.7 in Swarm mode
    - Docker Image: pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime. The CUDA and cuDNN versions have to be compatible with the GPU setup of the OS.
+  
+To choose a compatible image on another system, first run nvidia-smi on the host to inspect the installed NVIDIA driver. Then select an official pytorch/pytorch image tag whose CUDA version is supported by that driver, and adjust the first line in the Dockerfile accordingly. In practice, the host mainly needs a sufficiently new NVIDIA driver and a working NVIDIA container runtime / toolkit, the CUDA runtime used for PyTorch comes from the container image. If unsure, we recommend using the exact image we tested first. If that is not compatible with the host driver, choose the closest official PyTorch image tag with a compatible CUDA version from the PyTorch Docker Hub.
 
 **TODO: Please choose an image from [PyTorch Docker Hub](https://hub.docker.com/r/pytorch/pytorch/tags) which is compatible with your CUDA version and adjust the first line in the Dockerfile accordingly.** 
 
@@ -60,7 +63,7 @@ Only the repository has to be cloned. All dependencies, requirements, data sets 
 
 ### Estimated Time and Storage Consumption
 
-- Human and Compute Time: Running all our experiments sequentially requires over a week on our hardware setup. To reduce it to only a few days, our artifacts contain a mode called "artifacts", which does not perform the full number of runs but already suffices to produce similar figures.
+- Human and Compute Time: Running all experiments sequentially in artifacts mode requires over a week on our hardware setup, while paper mode requires substantially longer. To reduce it to only a few days, our artifacts contain a mode called "artifacts", which does not perform the full number of runs but already suffices to produce similar figures.
 
 - Overall Disk Space: Only the Docker image (12GB) and the three data sets (300MB) take up a noteworthy portion of disk space. Our experiments only produce dataloader partitions, CSV and PDF files, with the latter requiring only a few MBs.  
 
@@ -153,11 +156,13 @@ Every experiment creates CSV files, and PDF figures in `figures/<mode>/`. These 
 Every experiment supports multiple modes (`<mode>`):
 - `dry`: Used inside the script "test_setup.sh" to test the entire pipeline of experiments and plotting. This mode does **not** produce any meaningful results.
 - `paper`: Performs the exact same experiments as in the paper. The runtime estimations below were derived from the artifacts mode. Reproducing the exact same experiments requires roughly two weeks on the tested setup without parallelization.  
-- `artifacts`: The intended mode to evaluate these artifacts, with two major differences from `paper`. First, in experiment 3 and 4, DP-Hype lets each client perform local hyperparameter evaluations only once, but performs multiple runs to capture the influence of differential privacy. Second, the number of runs is reduced by half for all experiments. This mode reproduces very similar figures compared to those in the paper while significantly reducing the runtime for most experiments. We strongly encourage running experiments in parallel if possible.  
+- `artifacts`: The intended mode to evaluate these artifacts, with two major differences from `paper`. First, in experiment 3 and 4, DP-Hype lets each client perform local hyperparameter evaluations only once, but performs multiple runs to capture the influence of differential privacy. Second, the number of runs is reduced by half for all experiments. This mode reproduces very similar figures compared to those in the paper while significantly reducing the runtime for most experiments. 
+
+We recommend running experiments in numerical order 1, 2, 3, ..., 11. This order is chosen for convenience and for reusing already generated CSV files in later comparison plots. Running experiments in a different order does not change the underlying scientific results themselves. However, some later plotting scripts combine their own output with CSV files produced by earlier experiments. If those prerequisite files are not present yet, the experiment still reproduces its own method-specific results, but the final comparison figure may be incomplete until the referenced experiments have also been executed.
 
 To reduce runtime further, we include the result files for the OPT baseline. OPT is an often evaluated, standard federated learning algorithm. Plotting scripts in "plotting/" will use the baseline results from "opt_data/", indicated by a warning, if the corresponding data was not reproduced yet. Still, these artifacts provide code to reproduce the baseline results by appending a "yes" to the commands of experiments 3, 4, 10, and 11.
 
-**TODO: Replace `<device>`, e.g. `cuda:0`,  with the corresponding GPU device name or `cpu` for testing.**
+**TODO: Replace `<device>`, e.g. `cuda:0`,  with the corresponding GPU device name. Use `cpu` only for testing, because reproducing the main experiments on CPU is typically much slower.**
 
 *Optional: Use `screen` or `tmux` within the container to start a session that can easily be detached.*
 
@@ -215,7 +220,7 @@ bash experiments/ablation_subsets.sh artifacts <device>
 
 Fully contains the experiment described in Main Result 7. The CSV file is stored in algorithms/dphype_subsets/dphype/results/artifacts/ and the resulting figure has the name "figure10_ablation_subsets.pdf".
 
-*Hint: Relies on data from experiments 3, 11 but can be executed without this data to only reproduce Subsets.*
+*Hint: For the complete Figure 10 comparison, this plotting script also uses DP-Hype results from experiments 3 and 11. If these CSV files are not available yet, experiment 5 still reproduces the Subsets results, but the final comparison figure will be incomplete until experiments 3 and 11 have been run.*
 
 #### Experiment 6: Ablation Raw Losses
 - Corresponding Result: Main Result 6
@@ -225,9 +230,9 @@ Fully contains the experiment described in Main Result 7. The CSV file is stored
 bash experiments/ablation_rawlosses.sh artifacts <device>  
 ```
 
-Fully contains the experiment described in Main Result 6. The CSV file is stored in algorithms/dphype_subsets/dphype/results/artifacts/ and the resulting figure has the name "figure9_ablation_rawlosses.pdf". 
+Fully contains the experiment described in Main Result 6. The CSV file is stored in algorithms/dphype_rawlosses/dphype/results/artifacts/ and the resulting figure has the name "figure9_ablation_rawlosses.pdf". 
 
-*Hint: Relies on data from experiment 10 but can be executed without this data to only reproduce RawLosses.*
+*Hint: For the complete Figure 9 comparison, this plotting script also uses DP-Hype results from experiment 10. If these CSV files are not available yet, experiment 6 still reproduces the RawLosses results, but the final comparison figure will be incomplete until experiment 10 has been run.*
 
 #### Experiment 7: Accuracy Distributions
 - Corresponding Result: Main Result 3
@@ -259,7 +264,7 @@ bash experiments/ablation_feathers.sh artifacts <device>
 
 Fully contains the experiment described in Main Result 8. The CSV file is stored in algorithms/dphype_feathers/dphype/results/artifacts/ and the resulting figure has the name "figure11_ablation_feathers.pdf". 
 
-*Hint: Relies on data from experiment 3 but can be executed without this data to only reproduce the results of Feathers.*
+*Hint: For the complete Figure 11 comparison, this plotting script also uses DP-Hype results from experiment 3. If these CSV files are not available yet, experiment 9 still reproduces the Feathers results, but the final comparison figure will be incomplete until experiment 3 has been run.*
 
 #### Experiment 10: Privacy-Utility Trade-Off NON-IID N=100 (Figure 5)
 - Corresponding Result: Main Result 2
@@ -287,7 +292,7 @@ The same number of figures will be created. The names are figure12_privutil_trad
 
 ## Limitations
 
-- A Note on Differential Privacy: DP-Hype is a randomized algorithm in order to satisfy differential privacy. This additional randomness requires a large number of iterations to reproduce the results in the paper without large deviations. However, the required number of iterations can be very large, especially for privacy budgets <= 0.5. Thus, one should focus on the results for higher privacy budgets first, because they can be reproduced more reliably. The tendency of smaller privacy budgets to reduce performance drastically should also be visible, yet exact averages may be hard to reproduce within a limited time frame. This is especially true for results with a high confidence interval depicted as transparent, so-called ribbons in the figures.       
+- A Note on Differential Privacy: We would like to note that a degrading utility is a normal effect in differential privacy for small epsilons (ε \leq 0.25 in our case). Unlike non-private algorithms, a differentially private algorithm does not behave deterministically. It intentionally adds randomness in order to hide the influence of individual examples. Stronger privacy (smaller ε) means that more randomness must be added. If ε becomes very small that randomness can dominate the true signal, so the algorithm has to cope with a much noisier version of the data. In that case, a strong drop in utility, even toward random guessing, is not surprising. We believe it is important to show this behavior explicitly, since it makes visible where the privacy–utility trade-off breaks down in practice.       
 - The runtime in the resource consumption table (Table 4) will likely deviate when the artifacts are evaluated on different hardware. However, this is only natural and does not invalidate the comparison between runtimes.
 - The random guessing baseline (RandGuess) in Figure 4,5,12,13 could slightly deviate as performing the OPT baseline experiments still has some variance.
 - The accuracy histograms (Figure 3,8) may deviate a bit when reproduced. However, deviating counts from one accuracy bucket will stay in the neighborhood of that bucket and will likely not move to distant buckets. In other words, the height of some bars will likely change, yet the overall statement will not.
