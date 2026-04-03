@@ -262,7 +262,7 @@ Fully contains the experiment described in Main Result 5. The resulting figures 
 bash experiments/ablation_feathers.sh artifacts <device>   
 ```
 
-Fully contains the experiment described in Main Result 8. The CSV file is stored in algorithms/dphype_feathers/dphype/results/artifacts/ and the resulting figure has the name "figure11_ablation_feathers.pdf". 
+Fully contains the experiment described in Main Result 8. The CSV file is stored in algorithms/feathers/fl_dp_sa/results/artifacts/ and the resulting figure has the name "figure11_ablation_feathers.pdf". 
 
 *Hint: For the complete Figure 11 comparison, this plotting script also uses DP-Hype results from experiment 3. If these CSV files are not available yet, experiment 9 still reproduces the Feathers results, but the final comparison figure will be incomplete until experiment 3 has been run.*
 
