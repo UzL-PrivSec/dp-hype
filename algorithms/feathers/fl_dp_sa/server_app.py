@@ -39,7 +39,7 @@ def sum_integers(mode, metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # print('#####################################')
     for idx in range(len(hyperparams(mode))):
         rets[f"rew{idx}"] = sum(
-            np.nan_to_num([m[f"rew{idx}"] for _, m in metrics], nan=0.0)
+            np.nan_to_num([m[f"rew{idx}"] for _, m in metrics], nan=0.0, posinf=0.0, neginf=0.0)
         ) / len(metrics)
         l = [m[f"rew{idx}"] for _, m in metrics]
         # print the returned rewards (one reward for each client) for this hyperparameter
