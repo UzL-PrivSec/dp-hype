@@ -25,8 +25,9 @@ RUN wget --no-verbose https://julialang-s3.julialang.org/bin/linux/x64/1.12/juli
 
 ENV PATH="/workspace/julia-1.12.1/bin:${PATH}"
 
-# Clone repo
-RUN git clone https://github.com/UzL-PrivSec/dp-hype.git
+# Copy repo
+RUN mkdir dp-hype 
+COPY . ./dp-hype
 
 WORKDIR /workspace/dp-hype
 
