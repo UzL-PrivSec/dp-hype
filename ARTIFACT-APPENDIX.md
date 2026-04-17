@@ -96,7 +96,7 @@ Depending on your GPU setup and your Docker version, there are two possible ways
 
 ### Testing the Environment
 
-The artifacts provide a script "test_setup.sh", which can be used to check if the main components (Python, Julia, Dependencies, GPU / CUDA) are correctly set up. It also performs a few test runs of the simulation and DP-Hype. You can execute it using
+The artifacts provide a script "test_setup.sh", which can be used to check if the main components (Python, Julia, Dependencies, GPU / CUDA) are correctly set up. It also performs a few test runs of the simulation and DP-Hype. It has to be run from within the container via
 ```bash
 source test_setup.sh
 ``` 
