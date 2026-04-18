@@ -61,7 +61,7 @@ base_dir = "/workspace/dp-hype/algorithms/dphype_topk/dphype/results/$(args["mod
 base_dir_opt_data = "/workspace/dp-hype/opt_data/"
 base_save_dir = "/workspace/dp-hype/figures/$(args["mode"])/"
 
-iid_scenario_str = args["non_iid"] ? "beta-$(args["a"])" : "iid"
+iid_scenario_str = args["non_iid"] ? "dirichlet-$(args["a"])" : "iid"
 result_name = "$(replace(args["d"], "/" => "-"))-$(iid_scenario_str)-N$(args["n"])-epsAll.csv"
 path_dphype = base_dir * "dp-hype-$(result_name)"
 path_opt_data = base_dir_opt_data * "opt-$(result_name)"
