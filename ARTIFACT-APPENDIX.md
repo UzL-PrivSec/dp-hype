@@ -252,7 +252,7 @@ Fully contains the experiment described in Main Result 3. The resulting figures 
 bash experiments/dirichlet_distributions.sh artifacts
 ```
 
-Fully contains the experiment described in Main Result 5. The resulting figures are called "figure6_dirichlet_distribution.pdf" and "figure7_dirichlet_distribution.pdf". 
+Fully contains the experiment described in Main Result 5. The resulting figures are called "figure6_dirichlet_distribution_<MNIST|CIFAR-10>_beta-<30.0|5.0|0.5>.pdf" and "figure7_dirichlet_distribution_Adult_beta-<30.0|5.0|0.5>.pdf". 
 
 #### Experiment 9: Ablation Feathers 
 - Corresponding Result: Main Result 8
