@@ -34,4 +34,16 @@ All setup instructions, hardware and software requirements, experiment commands,
 
 ## Citation
 
-Coming soon
+If you use **DP-Hype** in your work, please cite:
+
+> Johannes Liebenow, Thorsten Peinemann, and Esfandiar Mohammadi.  
+> **DP-Hype: Federated Differentially Private Hyperparameter Search.**  
+> *Proceedings on Privacy Enhancing Technologies*, 2026.
+
+```bibtex
+@article{liebenow2026dp,
+  title   = {DP-Hype: Federated Differentially Private Hyperparameter Search},
+  author  = {Liebenow, Johannes and Peinemann, Thorsten and Mohammadi, Esfandiar},
+  journal = {Proceedings on Privacy Enhancing Technologies},
+  year    = {2026}
+}
